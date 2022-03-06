@@ -60,4 +60,56 @@ class ProductTests(APITestCase):
         response = self.client.get(url, format='json')
         self.assertEqual(response.data['count'], 0)
 
+    def test_product_search(self):
+        product1 = Product.objects.create(sku='whatever1', name='cotton shirt', is_active=False,
+                                          description='buy this amazing cotton shirt')
 
+        product2 = Product.objects.create(sku='whatever2', name='cotton shirt',
+                                          description='buy this mind-blowing cotton shirt')
+
+        product3 = Product.objects.create(sku='whatever3', name='cotton shirt expensive',
+                                          description='buy this premium cotton shirt')
+
+        url = "/products/"
+
+        query_params = {
+            'is_active': 'false'
+        }
+        response = self.client.get(url, query_params, format='json')
+        self.assertEqual(response.data['count'], 1)
+        self.assertEqual(response.data['results'][0]['sku'], product1.sku)
+
+        query_params = {
+            'sku': 'whatever'  # case sensitive and exact matching for sku. this should return 0 results
+        }
+        response = self.client.get(url, query_params, format='json')
+        self.assertEqual(response.data['count'], 0)
+
+        query_params = {
+            'sku': 'whatever2'  # case sensitive and exact matching for sku.
+        }
+        response = self.client.get(url, query_params, format='json')
+        self.assertEqual(response.data['count'], 1)
+        self.assertEqual(response.data['results'][0]['sku'], product2.sku)
+
+        query_params = {
+            "name": "cotton",
+            "description": "premium"
+        }
+        response = self.client.get(url, query_params, format='json')
+        self.assertEqual(response.data['count'], 1)
+        self.assertEqual(response.data['results'][0]['sku'], product3.sku)
+
+        query_params = {
+            "name": "cotton",
+        }
+        response = self.client.get(url, query_params, format='json')
+        self.assertEqual(response.data['count'], 3)
+
+        query_params = {
+            'is_active': 'false',
+            'name': 'cotton'
+        }
+        response = self.client.get(url, query_params, format='json')
+        self.assertEqual(response.data['count'], 1)
+        self.assertEqual(response.data['results'][0]['sku'], product1.sku)
