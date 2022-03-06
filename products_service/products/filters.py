@@ -5,8 +5,8 @@ from .models import Product
 
 class ProductFilter(FilterSet):
     sku = CharFilter(lookup_expr='exact')
-    name = CharFilter(lookup_expr='icontains')
-    description = CharFilter(lookup_expr='icontains')
+    name = CharFilter(lookup_expr='istartswith')
+    description = CharFilter(lookup_expr='search')
 
     class Meta:
         model = Product

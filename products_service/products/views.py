@@ -11,7 +11,7 @@ from .serializers import ProductSerializer
 
 class ProductViewSet(ModelViewSet):
     # http_method_names = ['get', 'post', 'patch', 'delete']
-    queryset = Product.objects.all()  # TODO: unordered queryset
+    queryset = Product.objects.all().order_by('name')
     serializer_class = ProductSerializer
     pagination_class = HundredResultsSetPagination
     filterset_class = ProductFilter
