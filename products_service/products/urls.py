@@ -1,8 +1,8 @@
-from rest_framework.routers import SimpleRouter
+from rest_framework.routers import DefaultRouter
 
 from .views import ProductViewSet
 
-router = SimpleRouter()
+router = DefaultRouter()
 router.register(r'products', ProductViewSet)
 
 urlpatterns = router.urls
