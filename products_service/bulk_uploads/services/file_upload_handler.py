@@ -3,6 +3,7 @@ from django.core.files.uploadedfile import InMemoryUploadedFile
 
 from ..models import CsvUploadTask
 from .task_id_generator import TaskIdGenerator
+from ..tasks import process_csv_file
 
 
 class UploadedFileHandler:
@@ -16,6 +17,9 @@ class UploadedFileHandler:
                 destination.write(chunk)
 
         CsvUploadTask.objects.create(task_id=new_task_id, file=file_path)
+        process_csv_file.delay(new_task_id)
+        # process_csv_file(new_task_id)
+
         return new_task_id
 
     @staticmethod

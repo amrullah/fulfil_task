@@ -22,3 +22,7 @@ class Product(models.Model):
     def __str__(self):
         return f'sku: {self.sku} | {self.name}'
 
+    def save(self, force_insert=False, force_update=False, using=None,
+             update_fields=None):
+        self.sku = self.sku.lower()
+        super().save(force_insert, force_update, using, update_fields)

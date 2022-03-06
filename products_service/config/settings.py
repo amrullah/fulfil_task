@@ -138,3 +138,5 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 MEDIA_DIR = BASE_DIR / 'media'
 
 MEDIA_URL = '/media/'
+
+REDIS_URL = 'redis://localhost:6379'
