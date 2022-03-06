@@ -1,3 +1,5 @@
+from django.http import HttpResponse
+from django.views.decorators.csrf import csrf_exempt
 from rest_framework.decorators import action
 from rest_framework.response import Response
 from rest_framework.status import HTTP_204_NO_CONTENT
@@ -10,7 +12,6 @@ from .serializers import ProductSerializer
 
 
 class ProductViewSet(ModelViewSet):
-    # http_method_names = ['get', 'post', 'patch', 'delete']
     queryset = Product.objects.all().order_by('name')
     serializer_class = ProductSerializer
     pagination_class = HundredResultsSetPagination
@@ -20,3 +21,8 @@ class ProductViewSet(ModelViewSet):
     def delete_all(self, request):
         Product.objects.all().delete()
         return Response(status=HTTP_204_NO_CONTENT)
+
+
+
+
+

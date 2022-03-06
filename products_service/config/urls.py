@@ -13,12 +13,25 @@ Including another URLconf
     1. Import the include() function: from django.urls import include, path
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
+from django.conf import settings
+from django.conf.urls.static import static
 from django.contrib import admin
 from django.urls import path, include
+from rest_framework.routers import DefaultRouter
 
-from products.urls import urlpatterns as product_urls
+from bulk_uploads.urls import urlpatterns as bulk_upload_urls
+from bulk_uploads.views import CsvUploadTaskViewSet
+from products.views import ProductViewSet
+
+
+router = DefaultRouter()
+router.register(r'products', ProductViewSet)
+router.register(r'uploads', CsvUploadTaskViewSet)
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('', include(product_urls))
+    path('', include(bulk_upload_urls))
 ]
+
+urlpatterns += router.urls
+urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
