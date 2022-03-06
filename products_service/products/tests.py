@@ -20,23 +20,24 @@ class ProductTests(APITestCase):
             'description': 'Mind Blowing, speechless'
         }
         response = self.client.post(url, data, format='json')
-        print(response.data)
         self.assertEqual(response.status_code, 201)
 
         response = self.client.get(url, format='json')
-        print(response.data)
+        self.assertEqual(response.status_code, 200)
+        self.assert_('sku' in response.data['results'][0])
+        self.assertEqual(response.data['count'], 1)
 
         response = self.client.get(url + "something/", format='json')
-        print(response.data)
+        self.assert_('sku' in response.data)
 
         data = {
             'description': 'Something you can\'t believe'
         }
         response = self.client.patch(url + "something/", data, format='json')
-        print(response.data)
-        print()
+        self.assertEqual(response.status_code, 200)
+
         response = self.client.get(url + "something/", format='json')
-        print(response.data)
+        self.assertEqual(response.data['description'], 'Something you can\'t believe')
 
         data = {
             'sku': 'something-else',
