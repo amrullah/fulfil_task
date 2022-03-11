@@ -34,7 +34,7 @@ def process_csv_file(task_id: str):
                 name, sku, description = row['name'], row['sku'], row['description']
                 # TODO: do bulk insert query for efficiency
                 product = ProductCreator.create(name, sku, description)
-                print(f'** Created Product: {product}')
+                # print(f'** Created Product: {product}')
                 upload_task.increment_processed_rows()
 
             upload_task.change_status_to_finished()

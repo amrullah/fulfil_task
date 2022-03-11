@@ -140,3 +140,4 @@ MEDIA_DIR = BASE_DIR / 'media'
 MEDIA_URL = '/media/'
 
 REDIS_URL = 'redis://localhost:6379'
+
