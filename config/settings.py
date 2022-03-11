@@ -141,6 +141,7 @@ MEDIA_DIR = BASE_DIR / 'media'
 
 MEDIA_URL = '/media/'
 
+FILE_UPLOAD_MAX_MEMORY_SIZE = 104857600 # 100mb # 2621440
 BROKER_URL = 'sqla+sqlite:///celerydb.sqlite' #'memory://localhost/'
 
 STATIC_ROOT = BASE_DIR / 'staticfiles'
