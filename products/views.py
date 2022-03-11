@@ -1,10 +1,9 @@
-from django.http import HttpResponse
-from django.views.decorators.csrf import csrf_exempt
 from rest_framework.decorators import action
 from rest_framework.response import Response
 from rest_framework.status import HTTP_204_NO_CONTENT
 from rest_framework.viewsets import ModelViewSet
 
+from . import logger
 from .filters import ProductFilter
 from .models import Product
 from .pagination_classes import HundredResultsSetPagination
@@ -20,6 +19,7 @@ class ProductViewSet(ModelViewSet):
     @action(methods=['delete'], detail=False)
     def delete_all(self, request):
         Product.objects.all().delete()
+        logger.info("All Products Deleted")
         return Response(status=HTTP_204_NO_CONTENT)
 
 

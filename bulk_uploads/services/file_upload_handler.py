@@ -1,6 +1,7 @@
 from django.conf import settings
 from django.core.files.uploadedfile import InMemoryUploadedFile
 
+from .. import logger
 from ..models import CsvUploadTask
 from .task_id_generator import TaskIdGenerator
 from ..tasks import process_csv_file
@@ -16,7 +17,8 @@ class UploadedFileHandler:
             for chunk in uploaded_file.chunks():
                 destination.write(chunk)
 
-        CsvUploadTask.objects.create(task_id=new_task_id, file=file_path)
+        upload_task = CsvUploadTask.objects.create(task_id=new_task_id, file=file_path)
+        logger.info(f"{upload_task} is now Uploaded")
         process_csv_file.delay(new_task_id)
         # process_csv_file(new_task_id)
 

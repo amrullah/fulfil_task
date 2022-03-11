@@ -1,9 +1,11 @@
 import csv
+import traceback
 
 from celery import shared_task
 from django.conf import settings
 
 from products.services.ProductCreator import ProductCreator
+from . import logger
 from .models import CsvUploadTask
 
 
@@ -18,12 +20,11 @@ def __update_the_total_rows_count_of_task(upload_task):
 
 @shared_task
 def process_csv_file(task_id: str):
-    print(f"Now in Celery Task: {task_id}")
+    logger.info(f"Now in Celery Task: {task_id}")
     # TODO: this task id should be in 'uploaded' state
-    # TODO: handle exception
     upload_task: CsvUploadTask = CsvUploadTask.objects.get(task_id=task_id)
     upload_task.change_status_to_processing()
-
+    logger.info(f"{upload_task} is now in Processing")
     try:
         __update_the_total_rows_count_of_task(upload_task)
 
@@ -38,6 +39,8 @@ def process_csv_file(task_id: str):
                 upload_task.increment_processed_rows()
 
             upload_task.change_status_to_finished()
+            logger.info(f"{upload_task} is now Finished")
     except:
         upload_task.change_status_to_failed()
+        logger.error(f"{upload_task} is now Failed: {traceback.format_exc()}")
         # TODO: need a field to store the traceback
