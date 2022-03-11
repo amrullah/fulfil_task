@@ -13,7 +13,7 @@ class Migration(migrations.Migration):
     operations = [
         migrations.AddIndex(
             model_name='product',
-            index=django.contrib.postgres.indexes.HashIndex(fields=['sku'], include=('name', 'is_active', 'description'), name='sku_hash_idx'),
+            index=django.contrib.postgres.indexes.HashIndex(fields=['sku'], name='sku_hash_idx'),
         ),
         migrations.AddIndex(
             model_name='product',
