@@ -12,4 +12,4 @@ app.config_from_object('django.conf:settings', namespace='CELERY')
 app.autodiscover_tasks()
 
 
-app.conf.broker_url = settings.REDIS_URL
+app.conf.broker_url = settings.BROKER_URL

@@ -141,7 +141,7 @@ MEDIA_DIR = BASE_DIR / 'media'
 
 MEDIA_URL = '/media/'
 
-REDIS_URL = 'redis://localhost:6379'
+BROKER_URL = 'sqla+sqlite:///celerydb.sqlite' #'memory://localhost/'
 
 STATIC_ROOT = BASE_DIR / 'staticfiles'
 
