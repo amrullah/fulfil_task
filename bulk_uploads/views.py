@@ -20,6 +20,7 @@ class CsvUploadTaskViewSet(ListModelMixin, RetrieveModelMixin, GenericViewSet):
 
 @csrf_exempt
 def file_upload_view(request):
+    logger.info("Entered the file Upload View")
     if not request.method == 'POST':
         return HttpResponse(status=405, content_type="application/json")
     try:

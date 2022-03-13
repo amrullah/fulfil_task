@@ -1,3 +1,5 @@
+from pathlib import Path
+
 from django.conf import settings
 from django.core.files.uploadedfile import InMemoryUploadedFile
 
@@ -13,6 +15,8 @@ class UploadedFileHandler:
         new_task_id = UploadedFileHandler.__get_new_task_id()
 
         file_path = f"csv/products_{new_task_id}.csv"
+        UploadedFileHandler.__ensure_directory_exists(file_path)
+
         with open(str(settings.MEDIA_DIR / file_path), 'wb+') as destination:
             for chunk in uploaded_file.chunks():
                 destination.write(chunk)
@@ -33,3 +37,9 @@ class UploadedFileHandler:
                 break
 
         return task_id
+
+    @staticmethod
+    def __ensure_directory_exists(file_path):
+        file_path = file_path.split("/")[0]
+        Path(settings.MEDIA_DIR / file_path).mkdir(parents=True, exist_ok=True)
+        pass
