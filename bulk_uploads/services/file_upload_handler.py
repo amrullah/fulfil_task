@@ -20,6 +20,7 @@ class UploadedFileHandler:
         with open(str(settings.MEDIA_DIR / file_path), 'wb+') as destination:
             for chunk in uploaded_file.chunks():
                 destination.write(chunk)
+                logger.info("Wrote chunk to file")
 
         upload_task = CsvUploadTask.objects.create(task_id=new_task_id, file=file_path)
         logger.info(f"{upload_task} is now Uploaded")
