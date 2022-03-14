@@ -17,13 +17,7 @@ class UploadedFileHandler:
 
         file_path = f"csv/products_{new_task_id}.csv"
         UploadedFileHandler.__ensure_directory_exists(file_path)
-
-        UploadedFileHandler.__write_file_to_disk(file_path, uploaded_file)
-
-        upload_task = CsvUploadTask.objects.create(task_id=new_task_id, file=file_path)
-        logger.info(f"{upload_task} is now Uploaded")
-        process_csv_file.delay(new_task_id)
-        # process_csv_file(new_task_id)
+        UploadedFileHandler.__write_file_to_disk_and_trigger_processing(new_task_id, file_path, uploaded_file)
 
         return new_task_id
 
@@ -54,7 +48,6 @@ class UploadedFileHandler:
     def __ensure_directory_exists(file_path):
         file_path = file_path.split("/")[0]
         Path(settings.MEDIA_DIR / file_path).mkdir(parents=True, exist_ok=True)
-        pass
 
     @staticmethod
     def __write_file_to_disk(file_path, uploaded_file):
